@@ -13,13 +13,15 @@ async def cluster_external(request: Request):
         data = await request.json()
         user_query = data.get("request", "")
         
+        # ★修正: プロンプトを英語に変更し、AIに英語で答えさせる
         response = client.models.generate_content(
             model="gemini-2.5-flash-lite", 
-            contents=f"あなたはターミナル常駐AIのNaviです。30文字以内で簡潔に回答してください: {user_query}"
+            contents=f"You are Navi, a terminal AI. Answer strictly in English, under 30 characters: {user_query}"
         )
         answer = response.text.strip()
     except Exception as e:
-        answer = "通信エラーが発生しました。"
+        # ★修正: エラーメッセージも英語に
+        answer = "Connection error."
 
     return {
         "verify": VERIFY_TOKEN,
